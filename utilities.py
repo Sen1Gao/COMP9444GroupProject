@@ -1,6 +1,6 @@
 """
 Group: Team1024
-File name: index_label_generator.py
+File name: utilities.py
 Author: Sen Gao
 """
 
