@@ -73,6 +73,8 @@ def main(args=None):
         for color_label_file_path,index_label_file_path in tqdm(zip(color_label_file_paths,index_label_file_paths),total=len(color_label_file_paths)):
             convert_image(color_label_file_path,index_label_file_path)
         print("Finish.")
+        print("====================")
+
     except Exception as e:
         print(e)
         sys.exit(0)
@@ -85,7 +87,9 @@ if __name__ == "__main__":
                         required=True,
                         help="The path of folder of annotation. For example: --input_folder_path your/RUGD_annotations/folder/path")
     args=parser.parse_args()
+    
     if not args.input_folder_path.exists() or not args.input_folder_path.is_dir():
         print("The folder path inputted does not exist or it is not a folder path!")
         sys.exit(0)
+
     main(args)

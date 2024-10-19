@@ -60,7 +60,7 @@ color_index_mapping={(0,0,0):0,         # void
                      (114,85,47):24     # picnic-table
                      }
 
-def index_lookup(color)->int:
+def index_lookup(color:tuple)->int:
     """
     Get index of color from color_index_mapping where the format of color is RGB.\n
     Therefore, you must convert color format to RGB before you pass variable 'color'\n
