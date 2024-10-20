@@ -4,6 +4,9 @@ File name: utilities.py
 Author: Sen Gao
 """
 
+import numpy as np
+import cv2
+
 # RGB format
 index_color_mapping={0:(0,0,0),         # void
                      1:(108,64,20),     # dirt
@@ -67,5 +70,16 @@ def index_lookup(color:tuple)->int:
     The variable 'color' is a tuple.
     """
     return color_index_mapping[color]
-        
-    
+
+def to_color_label(index_label:np.ndarray) -> np.ndarray:
+    """
+    Convert index label to color label for showing the result of prediction.
+    """
+    h,w=index_label.shape
+    color_label=np.zeros((h,w,3),dtype=np.uint8)
+    for i in range(h):
+        for j in range(w):
+            color=index_color_mapping[index_label[i][j]]
+            r,g,b=color
+            color_label[i][j]=np.array([b,g,r])
+    return color_label
