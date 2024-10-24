@@ -8,7 +8,7 @@ from pathlib import Path
 import shutil
 import random
 
-root_dir="C:/Users/SenGao/Downloads"
+root_dir=""
 split_dataset_dir_name="RUGD_split_dataset"
 traing_rate=0.8
 val_rate=0.1

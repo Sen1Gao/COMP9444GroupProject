@@ -52,5 +52,5 @@ def calculate_standardization_para(data_dir:str,batch_size=1,num_works=1):
 
 if __name__ == "__main__":
     calculate_standardization_para(data_dir="/RUGD_split_dataset/train/color_image",
-                                   batch_size=1,
-                                   num_works=1)
+                                   batch_size=10,
+                                   num_works=6)
