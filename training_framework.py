@@ -152,7 +152,7 @@ class Trainer():
         timestamp = datetime.now()
         timestamp_str = timestamp.strftime(f"%Y-%m-%d-%H-%M-%S")
         scripted_model = torch.jit.script(self.device_model)
-        scripted_model.save(f"{model_save_path}/{timestamp_str}_{self.model.__name__}_model.pt")
+        scripted_model.save(f"{model_save_path}/{timestamp_str}_model.pt")
 
 
 color_transform = transforms.Compose([
@@ -166,10 +166,10 @@ label_transform = transforms.Compose([
 
 trainer=Trainer(U_Net.UNet,25)
 
-data_set_path="/RUGD_split_dataset"
+data_set_path="C:/Users/SenGao/Downloads/RUGD_split_dataset"
 trainer.load_image_data(data_set_path, color_transform,label_transform,(512,512))
 
-trainer.set_training_parameters(0.001,4,50)
+trainer.set_training_parameters(0.01,5,40)
 
 model_save_path=data_set_path
 y1,y2,y3=trainer.start_training(model_save_path)
