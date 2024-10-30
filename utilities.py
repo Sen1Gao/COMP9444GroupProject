@@ -4,6 +4,7 @@ File name: utilities.py
 Author: Sen Gao
 """
 
+from pathlib import Path
 import numpy as np
 import cv2
 
@@ -83,3 +84,13 @@ def to_color_label(index_label:np.ndarray) -> np.ndarray:
             r,g,b=color
             color_label[i][j]=np.array([b,g,r])
     return color_label
+
+def get_sub_dir_list(parent_path:Path)->list|None:
+    if parent_path.exists() and parent_path.is_dir():
+        return [p for p in parent_path.iterdir() if p.is_dir()]
+    return None
+
+def get_sub_file_list(parent_path:Path,suffix:str)->list|None:
+    if parent_path.exists() and parent_path.is_dir():
+        return [f for f in parent_path.iterdir() if f.is_file() and f.suffix==suffix]
+    return None

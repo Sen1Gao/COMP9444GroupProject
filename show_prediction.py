@@ -43,20 +43,3 @@ with torch.no_grad():
     cv2.imshow("pred_color",pred_color)
     cv2.waitKey(0)
 
-    # fig = plt.figure(figsize=(15, 5))
-    # plt.subplot(1, 3, 1)
-    # plt.imshow(image)
-    # plt.title("Image")
-    # plt.axis('off')
-    # plt.subplot(1, 3, 2)
-    # plt.imshow(label_color)
-    # plt.title("Ground Truth")
-    # plt.axis('off')
-    # plt.subplot(1, 3, 3)
-    # plt.imshow(pred_color)
-    # plt.title("Prediction")
-    # plt.axis('off')
-    # plt.show()
-
-pass
-
