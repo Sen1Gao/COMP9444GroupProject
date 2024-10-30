@@ -11,15 +11,7 @@ import cv2
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 
-def get_sub_dir_list(parent_path:Path)->list|None:
-    if parent_path.exists() and parent_path.is_dir():
-        return [p for p in parent_path.iterdir() if p.is_dir()]
-    return None
-
-def get_sub_file_list(parent_path:Path,suffix:str)->list|None:
-    if parent_path.exists() and parent_path.is_dir():
-        return [f for f in parent_path.iterdir() if f.is_file() and f.suffix==suffix]
-    return None
+from utilities import get_sub_dir_list,get_sub_file_list
 
 def load_label(label_path:Path):
     return cv2.imread(label_path.as_posix(),cv2.IMREAD_UNCHANGED)

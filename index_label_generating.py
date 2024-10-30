@@ -12,14 +12,14 @@ import cv2
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 
-import utilities
+from utilities import index_lookup,get_sub_dir_list,get_sub_file_list
 
 def process_row(row:np.ndarray)->list:
     index_list=[]
     for element in row:
         bgr=element.tolist()
         rgb=(bgr[2],bgr[1],bgr[0])
-        index=utilities.index_lookup(rgb)
+        index=index_lookup(rgb)
         index_list.append(index)
     return index_list
 
@@ -36,16 +36,6 @@ def convert_color2index(file_path:Path)->np.ndarray|None:
 
 def process_color_label(file_path:Path,saving_path:Path)->bool:
     return cv2.imwrite(saving_path.as_posix(),convert_color2index(file_path))
-
-def get_sub_dir_list(parent_path:Path)->list|None:
-    if parent_path.exists() and parent_path.is_dir():
-        return [p for p in parent_path.iterdir() if p.is_dir()]
-    return None
-
-def get_sub_file_list(parent_path:Path,suffix:str)->list|None:
-    if parent_path.exists() and parent_path.is_dir():
-        return [f for f in parent_path.iterdir() if f.is_file() and f.suffix==suffix]
-    return None
     
 if __name__ == "__main__":
     # Set directory of RUGD_annotations here
