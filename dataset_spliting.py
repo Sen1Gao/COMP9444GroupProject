@@ -5,6 +5,7 @@ Author: Sen Gao
 """
 
 from pathlib import Path
+import random
 
 import numpy as np
 import cv2
@@ -13,8 +14,8 @@ import matplotlib.pyplot as plt
 
 from utilities import get_sub_dir_list,get_sub_file_list
 
-def load_label(label_path:Path):
-    return cv2.imread(label_path.as_posix(),cv2.IMREAD_UNCHANGED)
+def load_label(label_path:str):
+    return cv2.imread(label_path,cv2.IMREAD_UNCHANGED)
 
 def compute_pixel_distribution(labels, num_classes):
     N = labels.shape[0]
@@ -61,15 +62,19 @@ def stratified_split(labels, num_classes, test_size=0.2):
 
 if __name__ == "__main__":
     # Set directory of RUGD_frames-with-annotations here
-    frames_path=Path("C:/Users/SenGao/Downloads/RUGD_frames-with-annotations")
+    frames_path="C:/Users/SenGao/Downloads/RUGD_ws/RUGD_frames-with-annotations"
     # Set directory of RUGD_annotations_index here
-    annotations_index_path=Path("C:/Users/SenGao/Downloads/RUGD_annotations_index")
+    annotations_index_path="C:/Users/SenGao/Downloads/RUGD_ws/RUGD_annotations_index"
     # Set test data ratio here
     test_size=0.2
     # Set class number here
     num_class=25
     # Set directory of spliting result here
-    saving_path=Path("C:/Users/SenGao/Downloads")
+    saving_path="C:/Users/SenGao/Downloads/RUGD_ws"
+
+    frames_path=Path(frames_path)
+    annotations_index_path=Path(annotations_index_path)
+    saving_path=Path(saving_path)
 
     if frames_path.exists() and frames_path.is_dir() and annotations_index_path.exists() and annotations_index_path.is_dir():
         y=[]
@@ -83,8 +88,7 @@ if __name__ == "__main__":
                 label_path=annotations_index_path/frame_path.parent.name/frame_path.name
                 X_path_list.append(frame_path)
                 y_path_list.append(label_path)
-                label=load_label(label_path)
-                y.append(label)
+                y.append(load_label(label_path.as_posix()))
         
         y=np.array(y)
         (train_indices,test_indices) = stratified_split(y, num_class, test_size)

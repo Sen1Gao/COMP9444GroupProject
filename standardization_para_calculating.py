@@ -14,12 +14,13 @@ from torchvision import transforms
 from torch.utils.data import Dataset,DataLoader
 
 class CustomDataset(Dataset):
-    def __init__(self,train_data_root_dir,train_data_csv_file_name) -> None:
-        train_data_csv_file_path=Path(train_data_root_dir)/train_data_csv_file_name
+    def __init__(self,train_data_root_path,train_data_csv_file_name) -> None:
+        train_data_root_path=Path(train_data_root_path)
+        train_data_csv_file_path=train_data_root_path/train_data_csv_file_name
         train_data_file_dir_list= np.genfromtxt(train_data_csv_file_path,dtype=None,encoding='utf-8',delimiter=',')
         self.frame_path_list=[]
         for s in train_data_file_dir_list[:,:1].tolist():
-            self.frame_path_list.append(Path(train_data_root_dir)/s[0])
+            self.frame_path_list.append(train_data_root_path/s[0])
 
     def __len__(self) -> int:
         return len(self.frame_path_list)
@@ -32,7 +33,7 @@ class CustomDataset(Dataset):
 
 
 if __name__ == "__main__":
-    train_data_root_dir="C:/Users/SenGao/Downloads"
+    train_data_root_dir="C:/Users/SenGao/Downloads/RUGD_ws"
     train_data_csv_file_name="train_data_path.csv"
     dataset=CustomDataset(train_data_root_dir,train_data_csv_file_name)
     data_loader=DataLoader(dataset=dataset,batch_size=32,num_workers=6)
