@@ -1,12 +1,8 @@
-"""
-Group: Team1024
-File name: utilities.py
-Author: Sen Gao
-"""
-
 from pathlib import Path
+
 import numpy as np
 import cv2
+from concurrent.futures import ThreadPoolExecutor
 
 # RGB format
 index_color_mapping={0:(0,0,0),         # void
@@ -33,8 +29,7 @@ index_color_mapping={0:(0,0,0),         # void
                      21:(153,204,255),  # rock
                      22:(102,255,255),  # bridge
                      23:(101,101,11),   # concrete
-                     24:(114,85,47)     # picnic-table
-                     }
+                     24:(114,85,47)}    # picnic-table
 
 # RGB format
 color_index_mapping={(0,0,0):0,         # void
@@ -61,8 +56,7 @@ color_index_mapping={(0,0,0):0,         # void
                      (153,204,255):21,  # rock
                      (102,255,255):22,  # bridge
                      (101,101,11):23,   # concrete
-                     (114,85,47):24     # picnic-table
-                     }
+                     (114,85,47):24}    # picnic-table     
 
 def index_lookup(color:tuple)->int:
     """
@@ -85,12 +79,23 @@ def to_color_label(index_label:np.ndarray) -> np.ndarray:
             color_label[i][j]=np.array([b,g,r])
     return color_label
 
-def get_sub_dir_list(parent_path:Path)->list|None:
-    if parent_path.exists() and parent_path.is_dir():
-        return [p for p in parent_path.iterdir() if p.is_dir()]
-    return None
+def get_dirs_list(dir_path:Path)->list:
+    return [p for p in dir_path.iterdir() if p.is_dir()]
 
-def get_sub_file_list(parent_path:Path,suffix:str)->list|None:
-    if parent_path.exists() and parent_path.is_dir():
-        return [f for f in parent_path.iterdir() if f.is_file() and f.suffix==suffix]
-    return None
+def get_files_list(dir_path:Path,suffix:str)->list:
+    return [f for f in dir_path.iterdir() if f.is_file() and f.suffix==suffix]
+
+def process_row(row:np.ndarray)->list:
+    index_list=[]
+    for element in row:
+        bgr=element.tolist()
+        rgb=(bgr[2],bgr[1],bgr[0])
+        index_list.append(index_lookup(rgb))
+    return index_list
+
+def convert_color2index(file_path:str)->np.ndarray:
+    color=cv2.imread(file_path,cv2.IMREAD_COLOR)
+    rows=[color[i,:] for i in range(color.shape[0])]
+    with ThreadPoolExecutor() as executor:
+        rst=list(executor.map(process_row,rows))
+    return np.array(rst,dtype=np.uint8)
